@@ -1,10 +1,9 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePostTagTable extends Migration
+class CreateGuidesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +12,13 @@ class CreatePostTagTable extends Migration
      */
     public function up()
     {
-        Schema::create('post_tag', function (Blueprint $table) {
+        Schema::create('guides', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
-            $table->foreignId('tag_id')->constrained('tags')->onDelete('cascade');
-            $table->timestamps();
+            $table->string('judul');
+            $table->text('isi');
+            $table->string('gambar')->nullable();
+            $table->string('penulis');
+            $table->timestamps(); // Kolom created_at dan updated_at
         });
     }
 
@@ -28,7 +29,6 @@ class CreatePostTagTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('post_tag');
+        Schema::dropIfExists('guides');
     }
 }
-
