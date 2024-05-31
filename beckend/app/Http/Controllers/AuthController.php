@@ -1,12 +1,31 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Models\MLogin;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Mlogin;
 
 class AuthController extends Controller
 {
+    public function login(Request $request)
+    {
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        $login = Mlogin::where('username', $request->username)->first();
+
+        if ($login && Hash::check($request->password, $login->password)) {
+            // Generate token or session
+            return response()->json(['message' => 'Login successful']);
+        }
+
+        return response()->json(['message' => 'Invalid credentials'], 401);
+    }
+
     public function register(Request $request)
     {
         $request->validate([
@@ -26,6 +45,7 @@ class AuthController extends Controller
             ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     }
 
+
     public function logout(Request $request)
     {
         $login = auth()->user();
@@ -35,9 +55,13 @@ class AuthController extends Controller
             auth()->logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
-            return response()->json(['message' => 'Successfully logged out'], 200);
+            return response()->json(['message' => 'Successfully logged out'], 200)
+                ->header('Access-Control-Allow-Origin', 'http://localhost:3000')
+                ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
         }
 
-        return response()->json(['message' => 'No user logged in'], 401);
+        return response()->json(['message' => 'No user logged in'], 401)
+            ->header('Access-Control-Allow-Origin', 'http://localhost:3000')
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     }
 }
