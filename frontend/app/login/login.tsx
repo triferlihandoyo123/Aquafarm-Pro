@@ -40,29 +40,31 @@ const AuthController: React.FC = () => {
   };
   const register = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/register", {
-        method: "POST",
-        mode: "no-cors", // Harus menggunakan 'cors' untuk permintaan lintas asal
-        cache: "no-cache",
-        credentials: "include", // 'include' untuk menyertakan kredensial (misalnya, cookie)
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password, role }), // Pastikan variabel ini sudah diisi dengan benar
-      });
-  
-      if (response.ok) {
-        setMessage("User registered successfully");
-      } else {
-        // Mengambil pesan error dari respons
-        const errorData = await response.json();
-        setMessage(`Failed to register user: ${errorData.message}`);
-      }
+        const response = await fetch("http://127.0.0.1:8000/api/register", {
+            method: "POST",
+            mode: "cors", // Ubah mode menjadi 'cors'
+            cache: "no-cache",
+            credentials: "include", // 'include' untuk menyertakan kredensial (misalnya, cookie)
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ username, password}), // Pastikan variabel ini sudah diisi dengan benar
+        });
+
+        if (response.ok) {
+            setMessage("User registered successfully");
+        } else {
+            // Mengambil pesan error dari respons
+            const errorData = await response.json();
+            setMessage(`Failed to register user: ${errorData.message}`);
+        }
     } catch (error) {
-      console.error("Error registering user:", error);
-      setMessage("An error occurred while registering user");
+        console.error("Error registering user:", error);
+        setMessage("An error occurred while registering user");
     }
-  };
+};
+
+
   
 
 
@@ -100,6 +102,7 @@ const AuthController: React.FC = () => {
                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
               />
             </div>
+            
             {!isSignUp && <button
               onClick={login}
               className="w-full bg-green-600 text-white font-semibold px-4 py-2 rounded-md hover:bg-green-400 focus:outline-none focus:bg-blue-600"
