@@ -5,9 +5,9 @@ use App\Http\Controllers\IkanController;
 
 
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/register', [AuthController::class, 'register'])->middleware('api');
+Route::post('/login', [AuthController::class, 'login'])->middleware('api');
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('api');
 
 Route::post('/ikans', [IkanController::class, 'store']);
 Route::get('/ikans', [IkanController::class, 'index']);
