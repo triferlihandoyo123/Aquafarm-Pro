@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-
+import PanduanPage from '../panduan/page';
 interface NavbarProps {
     isOpen: boolean;
     toggleNavbar: () => void;
@@ -23,12 +23,11 @@ const Navbar: React.FC<NavbarProps> = ({ isOpen, toggleNavbar }) => {
                     <Link href="/">Beranda</Link>
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-700">
-                    <Link href="/about">Tentang</Link>
+                    <Link href="/panduan">Panduan</Link>
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-700">
                     <Link href="/contact">Kontak</Link>
                 </li>
-                {/* Tambahkan item menu lainnya sesuai kebutuhan */}
             </ul>
         </div>
     );
