@@ -1,7 +1,7 @@
 'use client'
 import React from "react";
 import { handleLogout } from "../auth/auth";
-import IkanForm from "../Ikan/page";
+import IkanForm from "../add_ikan/page";
 const LandingPage: React.FC = () => {
   
   // Data contoh untuk card
