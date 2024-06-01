@@ -1,7 +1,6 @@
 'use client'
 import React, { useState, useEffect } from "react";
-import Dashboard from "../dashboard_admin/dashboardA";
-
+import Dashboard from "../dashboardA/page";
 const AuthController: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
