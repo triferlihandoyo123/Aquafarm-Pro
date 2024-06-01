@@ -15,3 +15,9 @@ Route::get('/ikans/{id}', [IkanController::class, 'show']);
 Route::put('/ikans/{id}', [IkanController::class, 'update']);
 Route::delete('/ikans/{id}', [IkanController::class, 'destroy']);
 
+Route::post('/panduan', [PanduanController::class, 'store']);
+Route::get('/panduan', [PanduanController::class, 'index']);
+Route::get('/panduan/{id}', [PanduanController::class, 'show']);
+Route::put('/panduan/{id}', [PanduanController::class, 'update']);
+Route::delete('/panduan/{id}', [PanduanController::class, 'destroy']);
+
