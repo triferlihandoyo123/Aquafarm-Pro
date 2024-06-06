@@ -1,79 +1,68 @@
 'use client'
 import React, { useState } from 'react';
-
-const PanduanForm: React.FC = () => {
-  const [judul, setJudul] = useState('');
-  const [isi, setIsi] = useState('');
+import Link from 'next/link';
+import Dashboard from '../dashboardA/page';
+const IkanForm: React.FC = () => {
+  const [nama, setNama] = useState('');
+  const [deskripsi, setDeskripsi] = useState('');
   const [gambar, setGambar] = useState<File | null>(null);
-  const [penulis, setPenulis] = useState('');
   const [tanggalDibuat, setTanggalDibuat] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const formData = new FormData();
-    formData.append('judul', judul);
-    formData.append('isi', isi);
+    const formData = new FormData();  
+    formData.append('nama', nama);
+    formData.append('deskripsi', deskripsi);
     if (gambar) {
       formData.append('gambar', gambar);
     }
-    formData.append('penulis', penulis);
     formData.append('tanggal_dibuat', tanggalDibuat);
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/panduan', {
+      const response = await fetch('http://localhost:8000/api/ikans', {
         method: 'POST',
         body: formData,
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Gagal menambahkan panduan.');
+      if (response.ok) {
+        // Redirect or handle success accordingly
+        window.alert('Ikan berhasil ditambahkan.');
+        setNama('');
+        setDeskripsi('');
+        setGambar(null);
+        setTanggalDibuat('');
+      
+      } else {
+        // Handle error response
+        console.error('Gagal menambahkan ikan.');
       }
-
-      setJudul('');
-      setIsi('');
-      setGambar(null);
-      setPenulis('');
-      setTanggalDibuat('');
-      setSuccessMessage('Panduan berhasil ditambahkan.');
-      setError(null);
-    } catch (error: any) {
-      setError(error.message || 'Terjadi kesalahan jaringan.');
-      setSuccessMessage(null);
+    } catch (error) {
+      // Handle network error
+      console.error('Terjadi kesalahan jaringan:', error);
     }
-  };
-
-  const handleBack = () => {
-    // Tambahkan logika untuk kembali ke halaman sebelumnya
-    console.log('Kembali ke halaman sebelumnya');
   };
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md mt-5">
-      <h1 className="text-2xl font-semibold text-center mb-5">Tambah Data Panduan</h1>
-      {error && <div className="text-red-500 mb-4">{error}</div>}
-      {successMessage && <div className="text-green-500 mb-4">{successMessage}</div>}
+      <h1 className="text-2xl font-semibold text-center mb-5">Tambah Data Ikan</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="judul" className="block text-sm font-medium text-gray-700">Judul:</label>
+          <label htmlFor="nama" className="block text-sm font-medium text-gray-700">Nama:</label>
           <input
             type="text"
-            id="judul"
-            value={judul}
-            onChange={(e) => setJudul(e.target.value)}
+            id="nama"
+            value={nama}
+            onChange={(e) => setNama(e.target.value)}
             required
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
           />
         </div>
         <div>
-          <label htmlFor="isi" className="block text-sm font-medium text-gray-700">Isi:</label>
+          <label htmlFor="deskripsi" className="block text-sm font-medium text-gray-700">Deskripsi:</label>
           <textarea
-            id="isi"
-            value={isi}
-            onChange={(e) => setIsi(e.target.value)}
+            id="deskripsi"
+            value={deskripsi}
+            onChange={(e) => setDeskripsi(e.target.value)}
             required
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
           ></textarea>
@@ -90,17 +79,6 @@ const PanduanForm: React.FC = () => {
           />
         </div>
         <div>
-          <label htmlFor="penulis" className="block text-sm font-medium text-gray-700">Penulis:</label>
-          <input
-            type="text"
-            id="penulis"
-            value={penulis}
-            onChange={(e) => setPenulis(e.target.value)}
-            required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
-          />
-        </div>
-        <div>
           <label htmlFor="tanggal_dibuat" className="block text-sm font-medium text-gray-700">Tanggal Dibuat:</label>
           <input
             type="date"
@@ -112,18 +90,18 @@ const PanduanForm: React.FC = () => {
           />
         </div>
         <div className="flex justify-between">
-          <button
-            type="button"
-            onClick={handleBack}
+         <Link href={"dashboardA"}>
+         <button
             className="inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition duration-300 ease-in-out"
           >
             Kembali
           </button>
+         </Link>
           <button
             type="submit"
             className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-sky-500 hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition duration-300 ease-in-out"
           >
-            Tambahkan Panduan
+            Tambahkan Ikan
           </button>
         </div>
       </form>
@@ -131,4 +109,4 @@ const PanduanForm: React.FC = () => {
   );
 };
 
-export default PanduanForm;
+export default IkanForm;
