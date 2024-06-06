@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -18,12 +19,26 @@ class ArtikelController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'isi' => 'required',
+            'gambar' => 'nullable|string|max:255',
+            'penulis' => 'nullable|string|max:100',
+        ]);
+
         $artikel = Artikel::create($request->all());
         return response()->json($artikel, 201);
     }
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'judul' => 'sometimes|required|string|max:255',
+            'isi' => 'sometimes|required',
+            'gambar' => 'nullable|string|max:255',
+            'penulis' => 'nullable|string|max:100',
+        ]);
+
         $artikel = Artikel::findOrFail($id);
         $artikel->update($request->all());
         return response()->json($artikel, 200);
