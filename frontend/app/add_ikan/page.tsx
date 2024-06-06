@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react';
-
+import Link from 'next/link';
+import Dashboard from '../dashboardA/page';
 const IkanForm: React.FC = () => {
   const [nama, setNama] = useState('');
   const [deskripsi, setDeskripsi] = useState('');
@@ -19,13 +20,18 @@ const IkanForm: React.FC = () => {
     formData.append('tanggal_dibuat', tanggalDibuat);
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/ikans', {
+      const response = await fetch('http://localhost:8000/api/ikans', {
         method: 'POST',
         body: formData,
       });
       if (response.ok) {
         // Redirect or handle success accordingly
-        console.log('Ikan berhasil ditambahkan.');
+        window.alert('Ikan berhasil ditambahkan.');
+        setNama('');
+        setDeskripsi('');
+        setGambar(null);
+        setTanggalDibuat('');
+      
       } else {
         // Handle error response
         console.error('Gagal menambahkan ikan.');
@@ -34,11 +40,6 @@ const IkanForm: React.FC = () => {
       // Handle network error
       console.error('Terjadi kesalahan jaringan:', error);
     }
-  };
-
-  const handleBack = () => {
-    // Implement logic to navigate back
-    console.log('Kembali ke halaman sebelumnya');
   };
 
   return (
@@ -89,13 +90,13 @@ const IkanForm: React.FC = () => {
           />
         </div>
         <div className="flex justify-between">
-          <button
-            type="button"
-            onClick={handleBack}
+         <Link href={"dashboardA"}>
+         <button
             className="inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition duration-300 ease-in-out"
           >
             Kembali
           </button>
+         </Link>
           <button
             type="submit"
             className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-sky-500 hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition duration-300 ease-in-out"

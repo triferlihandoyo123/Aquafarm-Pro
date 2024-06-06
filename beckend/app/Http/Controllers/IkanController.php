@@ -4,88 +4,98 @@ namespace App\Http\Controllers;
 
 use App\Models\Ikan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage; // Tambahkan ini
+
 
 class IkanController extends Controller
 {
-    // Display a listing of the resource.
+    // Menampilkan daftar ikan.
     public function index()
     {
         $ikans = Ikan::all();
-        return view('ikans.index', compact('ikans'));
+        return response()->json($ikans);
     }
 
-    // Show the form for creating a new resource.
+    // Menampilkan form untuk membuat ikan baru.
     public function create()
     {
-        return view('ikans.create');
+        // Tidak dibutuhkan untuk API, hapus atau sesuaikan jika diperlukan
     }
 
-    // Store a newly created resource in storage.
+    // Menyimpan ikan baru ke penyimpanan.
     public function store(Request $request)
     {
         $request->validate([
             'nama' => 'required|string|max:255',
             'deskripsi' => 'required|string',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'tanggal_dibuat' => 'required|date',
         ]);
 
-        // Handle file upload
+        // Menangani unggah file gambar
         if ($request->hasFile('gambar')) {
-            $imageName = time().'.'.$request->gambar->extension();
-            $request->gambar->move(public_path('images'), $imageName);
+            $gambar = $request->file('gambar');
+            $nama_gambar = time().'.'.$gambar->getClientOriginalExtension();
+            $gambar->storeAs('public/ikans', $nama_gambar);
+            $url_gambar = asset('storage/ikans/'.$nama_gambar);
+        } else {
+            $url_gambar = null;
         }
 
-        Ikan::create([
+        $ikan = Ikan::create([
             'nama' => $request->nama,
             'deskripsi' => $request->deskripsi,
-            'gambar' => $imageName,
+            'gambar' => $url_gambar,
             'tanggal_dibuat' => $request->tanggal_dibuat,
         ]);
 
-        return redirect()->route('ikans.index')->with('success', 'Ikan berhasil ditambahkan.');
+        return response()->json($ikan, 201);
     }
 
-    // Display the specified resource.
+    // Menampilkan detail ikan tertentu.
     public function show(Ikan $ikan)
     {
-        return view('ikans.show', compact('ikan'));
+        return response()->json($ikan);
     }
 
-    // Show the form for editing the specified resource.
+    // Menampilkan form untuk mengedit ikan tertentu.
     public function edit(Ikan $ikan)
     {
-        return view('ikans.edit', compact('ikan'));
+        // Tidak dibutuhkan untuk API, hapus atau sesuaikan jika diperlukan
     }
 
-    // Update the specified resource in storage.
+    // Memperbarui ikan tertentu di penyimpanan.
     public function update(Request $request, Ikan $ikan)
     {
         $request->validate([
             'nama' => 'required|string|max:255',
             'deskripsi' => 'required|string',
-            'gambar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'tanggal_dibuat' => 'required|date',
         ]);
 
+        // Jika ada unggah gambar baru, simpan gambar tersebut
         if ($request->hasFile('gambar')) {
-            $imageName = time().'.'.$request->gambar->extension();
-            $request->gambar->move(public_path('images'), $imageName);
-            $ikan->gambar = $imageName;
+            $gambar = $request->file('gambar');
+            $nama_gambar = time().'.'.$gambar->getClientOriginalExtension();
+            $gambar->storeAs('public/ikans', $nama_gambar);
+            $url_gambar = asset('storage/ikans/'.$nama_gambar);
+            $ikan->gambar = $url_gambar;
         }
 
+        // Update informasi ikan
         $ikan->nama = $request->nama;
         $ikan->deskripsi = $request->deskripsi;
         $ikan->tanggal_dibuat = $request->tanggal_dibuat;
         $ikan->save();
 
-        return redirect()->route('ikans.index')->with('success', 'Ikan berhasil diperbarui.');
+        return response()->json($ikan);
     }
 
-    // Remove the specified resource from storage.
+    // Menghapus ikan tertentu dari penyimpanan.
     public function destroy(Ikan $ikan)
     {
         $ikan->delete();
-        return redirect()->route('ikans.index')->with('success', 'Ikan berhasil dihapus.');
+        return response()->json(['message' => 'Ikan berhasil dihapus.']);
     }
 }

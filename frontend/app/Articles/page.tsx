@@ -1,35 +1,48 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Navbar from '../Navbar/Navbar';
-import PanduanForm from '../add_panduan/page'; // Ganti dengan komponen PanduanForm yang sebelumnya Anda buat
+import axios from 'axios';
 
-const PanduanPage: React.FC = () => { // Ganti nama komponen dari Dashboard menjadi PanduanPage
+const ArtikelPage: React.FC = () => {
   const [isNavbarOpen, setIsNavbarOpen] = useState(true);
+  const [artikels, setArtikels] = useState([]);
 
   const toggleNavbar = () => {
     setIsNavbarOpen(!isNavbarOpen);
   };
 
+  useEffect(() => {
+    const fetchArtikels = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/api/artikels');
+        setArtikels(response.data);
+      } catch (error) {
+        console.error("There was an error fetching the artikels!", error);
+      }
+    };
+
+    fetchArtikels();
+  }, []);
+
   return (
     <div className="bg-emerald-700 w-screen h-screen flex flex-col">
-        <Navbar isOpen={isNavbarOpen} toggleNavbar={toggleNavbar} />
+      <Navbar isOpen={isNavbarOpen} toggleNavbar={toggleNavbar} />
       <div className="flex justify-end items-center p-4 bg-emerald-800">
         <button className="mr-4 bg-gray-600 px-4 py-2 rounded text-white">Setting</button>
         <button className="bg-red-600 px-4 py-2 rounded text-white">Log Out</button>
       </div>
       <div className="flex flex-grow">
-
         <div className={`transition-all duration-300 ${isNavbarOpen ? 'ml-64' : 'ml-16'} p-5 w-full`}>
           <nav className="flex justify-center mb-5">
-            <Link href="/add_panduan"> {/* Ganti tautan navigasi untuk menambah data */}
-              <button className="mr-1 bg-sky-500 px-2 py-3 w-40 rounded-full text-white active:bg-black active:text-sky-300 text-center">
-                Tambah Panduan {/* Ganti label tombol menjadi "Tambah Panduan" */}
+            <Link href="/add_articles">
+              <button className="mr-1 bg-sky-500 px-5 py-3 w-40 rounded-full text-white active:bg-black active:text-sky-300 text-center">
+                Tambah Artikel
               </button>
             </Link>
-            <Link href="/add_panduan"> {/* Ganti tautan navigasi untuk menyegarkan data jika diperlukan */}
-              <button className="ml-1 border-2 border-sky-500  py-3 w-40 rounded-full text-center text-white hover:bg-sky-500 hover:text-black">
+            <Link href="/add_artikel">
+              <button className="ml-1 border-2 border-sky-500 px-5 py-3 w-40 rounded-full text-center text-white hover:bg-sky-500">
                 Refresh Data
               </button>
             </Link>
@@ -65,8 +78,6 @@ const PanduanPage: React.FC = () => { // Ganti nama komponen dari Dashboard menj
               </tr>
             </thead>
             <tbody>
-              {/* Ganti data ikan statis dengan data panduan dari API */}
-              {/* Anda perlu mengambil data panduan dari API dan mengganti data statis di sini */}
               <tr>
                 <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
                   1
@@ -75,15 +86,15 @@ const PanduanPage: React.FC = () => { // Ganti nama komponen dari Dashboard menj
                   1
                 </td>
                 <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                  Panduan A
+                  Artikel Pertama
                 </td>
                 <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                  Isi panduan A
+                  Ini adalah isi artikel pertama.
                 </td>
                 <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
                   <img
-                    src="/images/panduan_a.jpg"
-                    alt="Panduan A"
+                    src="/images/artikel_1.jpg"
+                    alt="Artikel Pertama"
                     className="w-12 h-12"
                   />
                 </td>
@@ -110,15 +121,15 @@ const PanduanPage: React.FC = () => { // Ganti nama komponen dari Dashboard menj
                   2
                 </td>
                 <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                  Panduan B
+                  Artikel Kedua
                 </td>
                 <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                  Isi panduan B
+                  Ini adalah isi artikel kedua.
                 </td>
                 <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
                   <img
-                    src="/images/panduan_b.jpg"
-                    alt="Panduan B"
+                    src="/images/artikel_2.jpg"
+                    alt="Artikel Kedua"
                     className="w-12 h-12"
                   />
                 </td>
@@ -126,7 +137,7 @@ const PanduanPage: React.FC = () => { // Ganti nama komponen dari Dashboard menj
                   Penulis B
                 </td>
                 <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                  2024-06-02
+                  2024-06-03
                 </td>
                 <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
                   <button className="bg-sky-700 text-white px-3 py-2 rounded-md mr-1">
@@ -137,42 +148,48 @@ const PanduanPage: React.FC = () => { // Ganti nama komponen dari Dashboard menj
                   </button>
                 </td>
               </tr>
-              <tr>
-                <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                  3
-                </td>
-                <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                  3
-                </td>
-                <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                  Panduan C
-                </td>
-                <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                  Isi panduan C
-                </td>
-                <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                  <img
-                    src="/images/panduan_c.jpg"
-                    alt="Panduan C"
-                    className="w-12 h-12"
-                  />
-                </td>
-                <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                  Penulis C
-                </td>
-                <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                  2024-06-02
-                </td>
-                <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                  <button className="bg-sky-700 text-white px-3 py-2 rounded-md mr-1">
-                    Edit
-                  </button>
-                  <button className="bg-rose-700 text-white px-3 py-2 rounded-md ml-1">
-                    Hapus
-                  </button>
-                </td>
-              </tr>
+              {/* Tambahkan lebih banyak baris artikel sesuai kebutuhan */}
             </tbody>
+            {/* <tbody>
+              {artikels.map((artikel, index) => (
+                <tr key={artikel.id}>
+                  <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
+                    {index + 1}
+                  </td>
+                  <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
+                    {artikel.id}
+                  </td>
+                  <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
+                    {artikel.judul}
+                  </td>
+                  <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
+                    {artikel.isi}
+                  </td>
+                  <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
+                    <img
+                      src={artikel.gambar}
+                      alt={artikel.judul}
+                      className="w-12 h-12"
+                    />
+                  </td>
+                  <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
+                    {artikel.penulis}
+                  </td>
+                  <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
+                    {artikel.tanggal_dibuat}
+                  </td>
+                  <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
+                    <button className="bg-sky-700 text-white px-3 py-2 rounded-md mr-1">
+                      Edit
+                    </button>
+                    <button className="bg-rose-700 text-white px-3 py-2 rounded-md ml-1">
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody> */}
+            
           </table>
         </div>
       </div>
@@ -180,4 +197,4 @@ const PanduanPage: React.FC = () => { // Ganti nama komponen dari Dashboard menj
   );
 };
 
-export default PanduanPage;
+export default ArtikelPage;
