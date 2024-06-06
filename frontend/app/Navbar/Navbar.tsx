@@ -20,13 +20,13 @@ const Navbar: React.FC<NavbarProps> = ({ isOpen, toggleNavbar }) => {
             </div>
             <ul className={`mt-5 ${isOpen ? 'block' : 'hidden'}`}>
                 <li className="px-4 py-2 hover:bg-gray-700">
-                    <Link href="/">Beranda</Link>
+                    <Link href="/dashboardA">Beranda</Link>
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-700">
                     <Link href="/panduan">Panduan</Link>
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-700">
-                    <Link href="/contact">Kontak</Link>
+                    <Link href="/Articles">Articels</Link>
                 </li>
             </ul>
         </div>
