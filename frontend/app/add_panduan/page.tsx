@@ -7,6 +7,8 @@ const PanduanForm: React.FC = () => {
   const [gambar, setGambar] = useState<File | null>(null);
   const [penulis, setPenulis] = useState('');
   const [tanggalDibuat, setTanggalDibuat] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -21,27 +23,39 @@ const PanduanForm: React.FC = () => {
     formData.append('tanggal_dibuat', tanggalDibuat);
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/panduan', {
+      const response = await fetch('http://localhost:8000/api/panduan', {
         method: 'POST',
         body: formData,
       });
-      if (response.ok) {
-        console.log('Panduan berhasil ditambahkan.');
-      } else {
-        console.error('Gagal menambahkan panduan.');
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Gagal menambahkan panduan.');
       }
-    } catch (error) {
-      console.error('Terjadi kesalahan jaringan:', error);
+
+      setJudul('');
+      setIsi('');
+      setGambar(null);
+      setPenulis('');
+      setTanggalDibuat('');
+      setSuccessMessage('Panduan berhasil ditambahkan.');
+      setError(null);
+    } catch (error: any) {
+      setError(error.message || 'Terjadi kesalahan jaringan.');
+      setSuccessMessage(null);
     }
   };
 
   const handleBack = () => {
+    // Tambahkan logika untuk kembali ke halaman sebelumnya
     console.log('Kembali ke halaman sebelumnya');
   };
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md mt-5">
       <h1 className="text-2xl font-semibold text-center mb-5">Tambah Data Panduan</h1>
+      {error && <div className="text-red-500 mb-4">{error}</div>}
+      {successMessage && <div className="text-green-500 mb-4">{successMessage}</div>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="judul" className="block text-sm font-medium text-gray-700">Judul:</label>
