@@ -11,6 +11,23 @@ interface Ikan {
   gambar: string;
   tanggal_dibuat: string;
 }
+const handleLogout = async () => {
+  try {
+    const response = await fetch('http://localhost:8000/api/logout', {
+      method: 'POST',
+      // Tambahkan opsi lainnya seperti header jika diperlukan
+    });
+    if (response.ok) {
+      console.log('Logout successful');
+      // Lakukan sesuatu setelah logout berhasil
+    } else {
+      console.error('Failed to logout');
+    }
+  } catch (error) {
+    console.error('Error while logging out:', error);
+  }
+};
+
 
 const Dashboard: React.FC = () => {
   const [isNavbarOpen, setIsNavbarOpen] = useState(true);
@@ -43,7 +60,7 @@ const Dashboard: React.FC = () => {
       <Navbar isOpen={isNavbarOpen} toggleNavbar={toggleNavbar} />
       <div className="flex justify-end items-center p-4 bg-emerald-800">
         <button className="mr-4 bg-gray-600 px-4 py-2 rounded text-white">Setting</button>
-        <button className="bg-red-600 px-4 py-2 rounded text-white">Log Out</button>
+        <button className="bg-red-600 px-4 py-2 rounded text-white" onClick={handleLogout}>Log Out</button>
       </div>
       <div className="flex flex-grow">
 
@@ -54,7 +71,7 @@ const Dashboard: React.FC = () => {
                 Tambah Data
               </button>
             </Link>
-            <Link href="/">
+            <Link href="/dashboardA">
               <button className="ml-1 border-2 border-sky-500 px-5 py-3 w-40 rounded-full text-center text-white">
                 Refresh Data
               </button>
