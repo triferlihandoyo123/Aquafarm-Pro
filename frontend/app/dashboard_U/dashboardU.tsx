@@ -1,8 +1,7 @@
-// LandingPage.tsx
-
-'use client'
+"use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { handleLogout } from "../auth/auth";
 import IkanForm from "../add_ikan/page";
 
@@ -15,7 +14,7 @@ interface Ikan {
 }
 
 const LandingPage: React.FC = () => {
-  const [ikans, setIkans] = useState<Ikan[]>([]); // Explicitly define the type as an array of Ikans
+  const [ikans, setIkans] = useState<Ikan[]>([]);
 
   useEffect(() => {
     const fetchIkans = async () => {
@@ -46,29 +45,24 @@ const LandingPage: React.FC = () => {
           <nav className="text-white pr-3">
             <ul className="flex space-x-4">
               <li>
-                <a href="#" className="hover:text-blue-200">
+                <Link href="#home"className="hover:text-blue-200">
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-blue-200">
+                <Link href="#articles" className="hover:text-blue-200">
                   Articles
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-blue-200">
+                <Link href="#guides" className="hover:text-blue-200">
                   Guides
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-blue-200">
+                <Link href="#contact" className="hover:text-blue-200">
                   Contact
-                </a>
-              </li>
-              <li>
-                <button onClick={IkanForm} className="hover:text-blue-200">
-                  Create Data
-                </button>
+                </Link>
               </li>
               <li>
                 <img
@@ -91,8 +85,8 @@ const LandingPage: React.FC = () => {
 
       {/* Main Content Section */}
       <main className="flex flex-col container mx-auto p-5 overflow-y-auto">
-        <div className="">
-          <h1 className="text-4xl font-bold mb-8 text-white ">
+        <section id="home">
+          <h1 className="text-4xl font-bold mb-8 text-white">
             Panduan Praktis untuk Budidaya Ikan Air Tawar
           </h1>
           <p className="text-lg text-white">
@@ -100,40 +94,132 @@ const LandingPage: React.FC = () => {
             sini, Anda akan menemukan berbagai informasi berguna dan tutorial
             yang membantu Anda dalam budidaya ikan air tawar dengan efisien.
           </p>
-          <div className="mt-8 ">
+          <div className="mt-8">
             <button className="bg-emerald-500 z-100 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
               Mulai Sekarang
             </button>
           </div>
-        </div>
-
-        {/* Card Container */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-          {ikans.map((ikan) => (
-            <div
-              key={ikan.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden"
-            >
-              <img
-                src={ikan.gambar} // Gunakan URL langsung dari backend
-                alt={ikan.nama}
-                className="w-full h-40 object-cover rounded-t-lg"
-              />
-              <div className="p-4">
-                <h2 className="text-xl font-bold mb-2 text-gray-800">
-                  {ikan.nama}
-                </h2>
-                <p className="text-gray-700">{ikan.deskripsi}</p>
-                <div className="flex justify-end mt-4">
-                  <button className="bg-emerald-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Baca Selengkapnya
-                  </button>
+          {/* Card Container */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+            {ikans.map((ikan) => (
+              <div
+                key={ikan.id}
+                className="bg-white rounded-lg shadow-md overflow-hidden"
+              >
+                <img
+                  src={ikan.gambar}
+                  alt={ikan.nama}
+                  className="w-full h-40 object-cover rounded-t-lg"
+                />
+                <div className="p-4">
+                  <h2 className="text-xl font-bold mb-2 text-gray-800">
+                    {ikan.nama}
+                  </h2>
+                  <p className="text-gray-700">{ikan.deskripsi}</p>
+                  <div className="flex justify-end mt-4">
+                    <button className="bg-emerald-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                      Baca Selengkapnya
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="articles" className="mt-16">
+          <Articles />
+        </section>
+
+        <section id="guides" className="mt-16">
+          <Guides />
+        </section>
+
+        <section id="contact" className="mt-16">
+          <Contact />
+        </section>
       </main>
+    </div>
+  );
+};
+
+const Articles: React.FC = () => {
+  return (
+    <div>
+      <h1 className="text-4xl font-bold mb-8 text-white">Artikel Terbaru</h1>
+      <p className="text-lg text-white">
+        Selamat datang di halaman artikel. Di sini Anda dapat menemukan berbagai
+        artikel terkait budidaya ikan air tawar.
+      </p>
+      <div className="mt-8">
+        <button className="bg-emerald-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          Kembali ke Beranda
+        </button>
+      </div>
+      {/* Contoh artikel */}
+      <div className="mt-8">
+        <div className="bg-white rounded-lg shadow-md p-4 mb-4">
+          <h2 className="text-xl font-bold mb-2 text-gray-800">Artikel 1</h2>
+          <p className="text-gray-700">Deskripsi singkat artikel 1...</p>
+        </div>
+        <div className="bg-white rounded-lg shadow-md p-4 mb-4">
+          <h2 className="text-xl font-bold mb-2 text-gray-800">Artikel 2</h2>
+          <p className="text-gray-700">Deskripsi singkat artikel 2...</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Guides: React.FC = () => {
+  return (
+    <div>
+      <h1 className="text-4xl font-bold mb-8 text-white">Panduan Lengkap</h1>
+      <p className="text-lg text-white">
+        Selamat datang di halaman panduan. Di sini Anda dapat menemukan berbagai
+        panduan terkait budidaya ikan air tawar.
+      </p>
+      <div className="mt-8">
+        <button className="bg-emerald-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          Kembali ke Beranda
+        </button>
+      </div>
+      {/* Contoh panduan */}
+      <div className="mt-8">
+        <div className="bg-white rounded-lg shadow-md p-4 mb-4">
+          <h2 className="text-xl font-bold mb-2 text-gray-800">Panduan 1</h2>
+          <p className="text-gray-700">Deskripsi singkat panduan 1...</p>
+        </div>
+        <div className="bg-white rounded-lg shadow-md p-4 mb-4">
+          <h2 className="text-xl font-bold mb-2 text-gray-800">Panduan 2</h2>
+          <p className="text-gray-700">Deskripsi singkat panduan 2...</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Contact: React.FC = () => {
+  return (
+    <div>
+      <h1 className="text-4xl font-bold mb-8 text-white">Kontak Kami</h1>
+      <p className="text-lg text-white">
+        Selamat datang di halaman kontak. Di sini Anda dapat menemukan informasi
+        kontak untuk mendapatkan bantuan lebih lanjut.
+      </p>
+      <div className="mt-8">
+        <button className="bg-emerald-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          Kembali ke Beranda
+        </button>
+      </div>
+      {/* Informasi kontak */}
+
+      {/* Informasi kontak */}
+      <div className="mt-8 text-white">
+        <p>Email: info@aquafarmpro.com</p>
+        <p>Telepon: 123-456-7890</p>
+        <p>Alamat: Jl. Ikan Air Tawar No. 123, Kota Ikan, Indonesia</p>
+      </div>
     </div>
   );
 };
