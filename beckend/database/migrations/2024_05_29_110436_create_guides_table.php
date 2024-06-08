@@ -18,6 +18,7 @@ class CreateGuidesTable extends Migration
             $table->text('isi');
             $table->string('gambar')->nullable();
             $table->string('penulis');
+            $table->timestamp('tanggal_dibuat')->useCurrent();
             $table->timestamps(); // Kolom created_at dan updated_at
         });
     }
