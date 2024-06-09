@@ -1,8 +1,7 @@
-'use client'
+'use client';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Navbar from '../Navbar/Navbar';
-import PanduanForm from '../add_panduan/page';
 
 interface Panduan {
   id: number;
@@ -91,45 +90,52 @@ const PanduanPage: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {panduans.map((panduan, index) => (
-                <tr key={index}>
-                  <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                    {index + 1}
-                  </td>
-                  <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                    {panduan.id}
-                  </td>
-                  <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                    {panduan.judul}
-                  </td>
-                  <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                    {panduan.isi}
-                  </td>
-                  <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                    <div className="flex justify-center items-center">
-                      <img
-                        src={panduan.gambar}
-                        alt={panduan.judul}
-                        className="w-12 h-12"
-                      />
-                    </div>
-                  </td>
-                  <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                    {panduan.penulis}
-                  </td>
-                  <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                    {panduan.tanggal_dibuat}
-                  </td>
-                  <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
-                    <button className="bg-sky-700 text-white px-3 py-2 rounded-md mr-1">
-                      Edit
-                    </button>
-                    <button className="bg-rose-700 text-white px-3 py-2 rounded-md ml-1">
-                      Hapus
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {panduans.map((panduan, index) => {
+                const maxLength = 100;
+                const truncatedIsi = panduan.isi.length > maxLength
+                  ? `${panduan.isi.substring(0, maxLength)}...`
+                  : panduan.isi;
+
+                return (
+                  <tr key={index}>
+                    <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
+                      {index + 1}
+                    </td>
+                    <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
+                      {panduan.id}
+                    </td>
+                    <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
+                      {panduan.judul}
+                    </td>
+                    <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
+                      {truncatedIsi}
+                    </td>
+                    <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
+                      <div className="flex justify-center items-center">
+                        <img
+                          src={panduan.gambar}
+                          alt={panduan.judul}
+                          className="w-12 h-12"
+                        />
+                      </div>
+                    </td>
+                    <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
+                      {panduan.penulis}
+                    </td>
+                    <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
+                      {panduan.tanggal_dibuat}
+                    </td>
+                    <td className="border-2 border-slate-300 bg-white text-black h-8 text-center">
+                      <button className="bg-sky-700 text-white px-3 py-2 rounded-md mr-1">
+                        Edit
+                      </button>
+                      <button className="bg-rose-700 text-white px-3 py-2 rounded-md ml-1">
+                        Hapus
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
