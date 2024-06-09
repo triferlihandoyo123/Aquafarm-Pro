@@ -3,8 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IkanController;
 use App\Http\Controllers\PanduanController;
-
-
+use App\Http\Controllers\ArtikelController;
 
 
 Route::post('/register', [AuthController::class, 'register'])->middleware('api');
