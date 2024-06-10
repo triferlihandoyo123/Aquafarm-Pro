@@ -19,7 +19,16 @@ class AuthController extends Controller
         $login = Mlogin::where('username', $request->username)->first();
 
         if ($login && Hash::check($request->password, $login->password)) {
-            // Generate token or session
+            // Login user
+            Auth::login($login);
+
+            // Check user role and redirect accordingly
+            if ($login->role == 'admin') {
+                return response()->json(['message' => 'Login successful', 'redirect' => 'admin']);
+            } elseif ($login->role == 'users') {
+                return response()->json(['message' => 'Login successful', 'redirect' => 'users']);
+            }
+
             return response()->json(['message' => 'Login successful']);
         }
 
@@ -31,24 +40,24 @@ class AuthController extends Controller
         $request->validate([
             'username' => 'required|unique:logins',
             'password' => 'required|min:6',
+            'role' => '',
+
         ]);
-    
+
         $login = new MLogin();
         $login->username = $request->username;
         $login->password = Hash::make($request->password);
-        
-    
+
         // Tetapkan nilai default 'users' jika kolom 'role' tidak ada atau kosong
         $login->role = $request->filled('role') ? $request->role : 'users';
-    
+
         $login->save();
-    
+
         return response()->json(['message' => 'User registered successfully'])
             ->header('Access-Control-Allow-Origin', 'http://localhost:3000')
-            ->header('Access-Control-Allow-Methods', 'POST');
+            ->header('Access-Control-Allow-Methods', '*');
     }
-    
-    
+
     public function logout(Request $request)
     {
         $login = auth()->user();

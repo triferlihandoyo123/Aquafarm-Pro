@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Image from "next/image";
 import Login from "./login/login";
 import Dashboard from "./dashboardA/page";
-import LandingPage from "./dashboard_U/dashboardU";
+import LandingPage from "./dashboard_U/page";
 
 export default function Home() {
   return (
